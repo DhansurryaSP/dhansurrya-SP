@@ -1,8 +1,8 @@
 @media screen and (max-width: 1400px) {
-  #profile {
+  /* #profile {
     height: 83vh;
     margin-bottom: 6rem;
-  }
+  } */
   .about-containers {
     flex-wrap: wrap;
   }
@@ -52,10 +52,10 @@
   footer {
     height: 40vh;
   }
-  #profile {
+  /* #profile {
     height: 83vh;
     margin-bottom: 0;
-  }
+  } */
   article {
     font-size: 1rem;
   }
@@ -87,8 +87,8 @@
     text-align: center;
   }
   .section__pic-container {
-    width: auto;
-    height: 46vw;
+    width: 100%;
+    height: 300px;
     justify-content: center;
   }
   .section__text__p2 {
@@ -99,5 +99,8 @@
   }
   .text-container {
     text-align: justify;
+  }
+  .media-linkedin{
+    display: none;
   }
 }
