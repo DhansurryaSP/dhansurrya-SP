@@ -558,8 +558,8 @@ footer p {
   }
 
   .section__pic-container {
-    width: 100%;
-    height: 300px;
+    /* width: 100%;
+    height: 300px; */
     justify-content: center;
   }
 
