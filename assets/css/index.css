@@ -98,10 +98,11 @@ a:hover {
   top: 100%;
   right: 0;
   background-color: white;
-  width: 300px;
+  width: 400px;
   max-height: 0;
   overflow: hidden;
   transition: all 0.3 ease-in-out;
+  border-radius: 15px;
 }
 
 .menu-links a {
@@ -460,6 +461,14 @@ footer p {
 }
 
 @media screen and (max-width: 1200px) {
+
+  nav {
+    justify-content: space-between;
+    height: max-content;
+    padding: 30px 20px;
+}
+
+
   #desktop-nav {
     display: none;
   }
