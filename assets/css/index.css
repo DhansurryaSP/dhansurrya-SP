@@ -46,8 +46,8 @@ nav {
 }
 
 a {
-  color: black;
-  text-decoration: none;
+  color: black !important;
+  text-decoration: none !important;
   text-decoration-color: white;
 }
 
