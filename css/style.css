@@ -1313,6 +1313,20 @@ footer .credits{
   border-radius: .3rem;
 }
 
+
+.ani-btn:link,
+.ani-btn:visited{
+  background-color: #312567;
+  background-image: linear-gradient(90deg, #312567, #7891e6);
+}
+
+.r-btn:link,
+.r-btn:visited{
+  background-color: #bd1616;
+  background-image: linear-gradient(90deg, #a03232, #e80d0d);
+}
+
+
 .butn:link,
 .butn:visited {
   display: inline-flex;
@@ -1321,12 +1335,9 @@ footer .credits{
   font-size: 1.5rem;
   text-transform: uppercase;
   text-decoration: none;
-  background-color: #bd1616;
-  background-image: linear-gradient(90deg, #a03232, #e80d0d);
   padding: 1rem 2.5rem;
   height: 4rem;
   width: 20rem;
-
   margin-right: 13px;
   border-radius: 4px;
   border: none;
