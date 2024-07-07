@@ -1320,6 +1320,17 @@ footer .credits{
   background-image: linear-gradient(90deg, #312567, #7891e6);
 }
 
+.e-btn:link,
+.e-btn:visited{
+  background-color: #23242b;
+  background-image: linear-gradient(90deg, #8f8f8f, #23242b);
+}
+
+/* .e-btn span{
+  color: #000;
+  font-weight: 500;
+} */
+
 .r-btn:link,
 .r-btn:visited{
   background-color: #bd1616;
