@@ -43,11 +43,15 @@ export default function Navbar() {
 
         {/* CTA + MOBILE ICON */}
         <div className="flex items-center gap-4">
-          <button className="hidden md:block bg-violet-500 text-white
-                             px-5 py-2 rounded-md text-sm
-                             hover:bg-violet-600 transition">
-            Download CV
-          </button>
+<a
+  href="/resume/Dhansurrya_SP_Resume.pdf"
+  download
+  className="hidden md:block bg-violet-500 text-white
+             px-5 py-2 rounded-md text-sm
+             hover:bg-violet-600 transition"
+>
+  Download CV
+</a>
 
           {/* MOBILE MENU BUTTON */}
           <button
@@ -87,11 +91,15 @@ export default function Navbar() {
                 </li>
               ))}
 
-              <button className="mt-4 bg-violet-500 text-white
-                                 px-5 py-3 rounded-md
-                                 hover:bg-violet-600 transition">
-                Download CV
-              </button>
+<a
+  href="/resume/Dhansurrya_SP_Resume.pdf"
+  download
+  className="mt-4 bg-violet-500 text-white
+             px-5 py-3 rounded-md
+             hover:bg-violet-600 transition"
+>
+  Download CV
+</a>
             </ul>
           </motion.div>
         )}
