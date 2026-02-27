@@ -1,47 +1,41 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 export default function Contact() {
   const [status, setStatus] = useState("idle"); // idle | sending | success
-  const audioRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("sending");
 
-    // Play engine sound
-    audioRef.current.currentTime = 0;
-    audioRef.current.play();
-
-    const form = e.target;
-    const data = new FormData(form);
+    const formData = new FormData(e.target);
 
     try {
-      await fetch("/", { method: "POST", body: data });
+      await fetch("/", {
+        method: "POST",
+        body: formData,
+      });
 
       setTimeout(() => {
-        audioRef.current.pause();
         setStatus("success");
-        form.reset();
-      }, 2600);
+        e.target.reset();
+      }, 2200);
     } catch {
-      audioRef.current.pause();
       setStatus("idle");
-      alert("Something went wrong 😢");
+      alert("Failed to send message");
     }
   };
 
   return (
-    <section className="relative overflow-hidden py-32 bg-[#0b0b12]">
-      {/* ENGINE AUDIO */}
-      <audio ref={audioRef} src="/f1-engine.mp3" preload="auto" />
-
+    <section className="relative py-32 bg-[#0b0b12] overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
 
-        {/* LEFT */}
+        {/* LEFT CONTENT */}
         <div>
-          <h3 className="text-3xl font-semibold text-white mb-6">Get in Touch</h3>
-          <p className="text-gray-400">
+          <h3 className="text-3xl font-semibold text-white mb-6">
+            Get in Touch
+          </h3>
+          <p className="text-gray-400 leading-relaxed">
             Have a project in mind or just want to say hi?
             Drop a message — I’ll get back to you very soon 🙂
           </p>
@@ -51,17 +45,17 @@ export default function Contact() {
         <AnimatePresence mode="wait">
 
           {/* ================= FORM ================= */}
-          {status === "idle" && (
+          {status !== "success" && (
             <motion.form
               key="form"
               name="contact"
               method="POST"
               data-netlify="true"
               onSubmit={handleSubmit}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-10 space-y-6"
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-10 space-y-6 overflow-hidden"
             >
               <input type="hidden" name="form-name" value="contact" />
 
@@ -69,71 +63,87 @@ export default function Contact() {
               <input name="email" required type="email" placeholder="Your Email" className="input" />
               <textarea name="message" required rows="4" placeholder="Your Message" className="input" />
 
-              <button className="btn">Send Message 🚀</button>
-            </motion.form>
-          )}
-
-          {/* ================= F1 LOADER ================= */}
-          {status === "sending" && (
-            <motion.div
-              key="sending"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="relative bg-black/60 border border-white/10 rounded-3xl h-[360px] overflow-hidden flex items-center justify-center"
-            >
-              {/* SPEED LINES */}
-              {[...Array(8)].map((_, i) => (
-                <motion.span
-                  key={i}
-                  className="absolute top-0 w-1 h-full bg-white/10"
-                  initial={{ x: -200 }}
-                  animate={{ x: 600 }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 0.5,
-                    delay: i * 0.1,
-                    ease: "linear",
-                  }}
-                />
-              ))}
-
-              {/* CAR */}
-              <motion.div
-                animate={{ x: [-120, 120] }}
-                transition={{ repeat: Infinity, duration: 0.6, ease: "linear" }}
-                className="text-6xl z-10"
+              {/* BUTTON */}
+              <motion.button
+                type="submit"
+                disabled={status === "sending"}
+                className="relative w-full py-4 rounded-xl font-semibold text-white
+                           bg-gradient-to-r from-violet-500 to-indigo-500
+                           overflow-hidden"
               >
-                🏎️
-              </motion.div>
+                {/* TEXT */}
+                <span className={status === "sending" ? "opacity-0" : ""}>
+                  Send Message
+                </span>
 
-              <p className="absolute bottom-8 text-gray-300 tracking-widest">
-                SENDING MESSAGE...
-              </p>
-            </motion.div>
+                {/* ROCKET */}
+                <AnimatePresence>
+                  {status === "idle" && (
+                    <motion.span
+                      className="absolute right-6 top-1/2 -translate-y-1/2 text-xl"
+                      initial={{ x: 0 }}
+                      animate={{ x: [0, 6, 0] }}
+                      transition={{ repeat: Infinity, duration: 1.2 }}
+                    >
+                      🚀
+                    </motion.span>
+                  )}
+
+                  {status === "sending" && (
+                    <motion.span
+                      className="absolute left-1/2 bottom-4 text-3xl"
+                      initial={{ y: 0, opacity: 1 }}
+                      animate={{ y: -260, opacity: 1 }}
+                      transition={{ duration: 2, ease: "easeIn" }}
+                    >
+                      🚀
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+
+                {/* SMOKE */}
+                {status === "sending" &&
+                  [...Array(8)].map((_, i) => (
+                    <motion.span
+                      key={i}
+                      className="absolute left-1/2 bottom-3 w-2 h-2 bg-gray-300/50 rounded-full"
+                      initial={{ y: 0, opacity: 1, scale: 0.6 }}
+                      animate={{
+                        y: 30 + i * 6,
+                        opacity: 0,
+                        scale: 1.4,
+                      }}
+                      transition={{
+                        duration: 1,
+                        delay: i * 0.1,
+                      }}
+                    />
+                  ))}
+              </motion.button>
+            </motion.form>
           )}
 
           {/* ================= SUCCESS ================= */}
           {status === "success" && (
             <motion.div
               key="success"
-              initial={{ scale: 0.7, opacity: 0 }}
+              initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 120 }}
               className="relative bg-black/60 border border-white/10 rounded-3xl p-12 text-center overflow-hidden"
             >
               {/* CONFETTI */}
-              {[...Array(25)].map((_, i) => (
+              {[...Array(20)].map((_, i) => (
                 <motion.span
                   key={i}
-                  className="absolute w-2 h-2 bg-green-400 rounded-full"
+                  className="absolute w-2 h-2 bg-violet-400 rounded-full"
                   initial={{ x: 0, y: 0, opacity: 1 }}
                   animate={{
-                    x: Math.random() * 300 - 150,
-                    y: Math.random() * -200 - 50,
+                    x: Math.random() * 260 - 130,
+                    y: Math.random() * -200,
                     opacity: 0,
                   }}
-                  transition={{ duration: 1.4 }}
+                  transition={{ duration: 1.6 }}
                 />
               ))}
 
@@ -151,7 +161,7 @@ export default function Contact() {
         </AnimatePresence>
       </div>
 
-      {/* TAILWIND SHORTCUTS */}
+      {/* LOCAL STYLES */}
       <style>{`
         .input {
           width: 100%;
@@ -160,14 +170,6 @@ export default function Contact() {
           background: rgba(0,0,0,0.4);
           border: 1px solid rgba(255,255,255,0.1);
           color: white;
-        }
-        .btn {
-          width: 100%;
-          padding: 16px;
-          border-radius: 14px;
-          font-weight: 600;
-          color: white;
-          background: linear-gradient(to right, #8b5cf6, #6366f1);
         }
       `}</style>
     </section>
