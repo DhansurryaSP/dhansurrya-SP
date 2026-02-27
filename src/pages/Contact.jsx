@@ -1,14 +1,41 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 export default function Contact() {
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const data = new FormData(form);
+
+    fetch("/", {
+      method: "POST",
+      body: data,
+    })
+      .then(() => {
+        setSuccess(true);
+        form.reset();
+      })
+      .catch(() => alert("Something went wrong. Please try again."));
+  };
+
   return (
     <section
       id="contact"
       className="relative overflow-hidden py-32 bg-[#0b0b12]"
     >
       {/* ===================== */}
-      {/* BACKGROUND ORBS */}
+      {/* NETLIFY HIDDEN FORM */}
       {/* ===================== */}
+      <form name="contact" data-netlify="true" hidden>
+        <input type="text" name="name" />
+        <input type="email" name="email" />
+        <textarea name="message" />
+      </form>
+
+      {/* BACKGROUND ORBS */}
       <div className="absolute inset-0 -z-10">
         <motion.div
           animate={{ x: [0, 80, 0], y: [0, -60, 0] }}
@@ -23,10 +50,6 @@ export default function Contact() {
       </div>
 
       <div className="max-w-6xl mx-auto px-6">
-
-        {/* ===================== */}
-        {/* CONTENT */}
-        {/* ===================== */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
 
           {/* LEFT INFO */}
@@ -41,89 +64,102 @@ export default function Contact() {
             </h3>
 
             <p className="text-gray-400 mb-10 leading-relaxed">
-              Whether you’re looking to build a product, need help with design
-              or engineering, or just want to connect — I’m always open to
-              meaningful conversations.
+              Have a project in mind or just want to say hi?
+              Drop a message — I’ll get back to you soon.
             </p>
-
-            <div className="space-y-6 text-gray-300">
-              <div className="flex items-center gap-4">
-                <span className="text-2xl">📧</span>
-                <span>dhansurrya@email.com</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className="text-2xl">📍</span>
-                <span>India</span>
-              </div>
-            </div>
           </motion.div>
 
-          {/* RIGHT FORM */}
-          <motion.form
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            whileHover={{ y: -6 }}
-            className="
-              relative
-              bg-white/5 backdrop-blur-2xl
-              border border-white/10
-              rounded-3xl p-10 space-y-6
-              shadow-[0_0_60px_rgba(139,92,246,0.15)]
-            "
-          >
-            <input
-              type="text"
-              placeholder="Your Name"
-              className="
-                w-full px-4 py-3 rounded-lg
-                bg-black/40 border border-white/10
-                text-white placeholder-gray-400
-                focus:outline-none focus:border-violet-400
-                transition
-              "
-            />
+          {/* RIGHT CARD */}
+          <AnimatePresence mode="wait">
+            {!success ? (
+              <motion.form
+                key="form"
+                name="contact"
+                method="POST"
+                data-netlify="true"
+                onSubmit={handleSubmit}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.6 }}
+                className="
+                  bg-white/5 backdrop-blur-2xl
+                  border border-white/10
+                  rounded-3xl p-10 space-y-6
+                  shadow-[0_0_60px_rgba(139,92,246,0.15)]
+                "
+              >
+                <input type="hidden" name="form-name" value="contact" />
 
-            <input
-              type="email"
-              placeholder="Your Email"
-              className="
-                w-full px-4 py-3 rounded-lg
-                bg-black/40 border border-white/10
-                text-white placeholder-gray-400
-                focus:outline-none focus:border-violet-400
-                transition
-              "
-            />
+                <input
+                  name="name"
+                  required
+                  placeholder="Your Name"
+                  className="w-full px-4 py-3 rounded-lg bg-black/40 border border-white/10 text-white"
+                />
 
-            <textarea
-              rows="4"
-              placeholder="Your Message"
-              className="
-                w-full px-4 py-3 rounded-lg
-                bg-black/40 border border-white/10
-                text-white placeholder-gray-400
-                focus:outline-none focus:border-violet-400
-                transition
-              "
-            />
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="Your Email"
+                  className="w-full px-4 py-3 rounded-lg bg-black/40 border border-white/10 text-white"
+                />
 
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              type="submit"
-              className="
-                w-full py-4 rounded-xl font-semibold text-white
-                bg-gradient-to-r from-violet-500 to-indigo-500
-                shadow-[0_0_30px_rgba(139,92,246,0.6)]
-                hover:shadow-[0_0_50px_rgba(139,92,246,0.9)]
-                transition
-              "
-            >
-              Send Message 🚀
-            </motion.button>
-          </motion.form>
+                <textarea
+                  name="message"
+                  rows="4"
+                  required
+                  placeholder="Your Message"
+                  className="w-full px-4 py-3 rounded-lg bg-black/40 border border-white/10 text-white"
+                />
+
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  type="submit"
+                  className="
+                    w-full py-4 rounded-xl font-semibold text-white
+                    bg-gradient-to-r from-violet-500 to-indigo-500
+                    shadow-[0_0_30px_rgba(139,92,246,0.6)]
+                  "
+                >
+                  Send Message 🚀
+                </motion.button>
+              </motion.form>
+            ) : (
+              /* SUCCESS STATE */
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="
+                  bg-white/5 backdrop-blur-2xl
+                  border border-white/10
+                  rounded-3xl p-12 text-center
+                  shadow-[0_0_60px_rgba(34,197,94,0.25)]
+                "
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 200 }}
+                  className="text-6xl mb-6"
+                >
+                  ✅
+                </motion.div>
+
+                <h4 className="text-2xl font-semibold text-white mb-4">
+                  Message Sent!
+                </h4>
+
+                <p className="text-gray-400">
+                  Thanks for reaching out.  
+                  I’ll get back to you very soon 🙂
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
         </div>
       </div>
