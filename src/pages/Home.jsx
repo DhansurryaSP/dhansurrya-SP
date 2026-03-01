@@ -21,7 +21,7 @@ export default function Home() {
     <main>
       <ScrollArrows sections={homeSections} />
 
-      <section id="hero">
+      <section id="hero" className="pt-40 md:pt-24">
         <Hero />
       </section>
 
