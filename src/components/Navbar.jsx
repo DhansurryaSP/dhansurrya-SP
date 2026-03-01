@@ -7,6 +7,7 @@ export default function Navbar() {
     { name: "Home", to: "/" },
     { name: "About", to: "/about" },
     { name: "Contact", to: "/contact" },
+    { name: "Application Support", to: "/application-support" },
   ];
 
   const [open, setOpen] = useState(false);
